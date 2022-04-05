@@ -18,16 +18,29 @@ class Perso {
 		// constructor prends des arguments lié aux instances créées dans la class Program, les initialisé
 	}
 
-	attack() {
+	attack(opponent) {
+		console.log(opponent);
 		this.attackDamage += getRandomInteger(1, this.pvMax / 10);
+		const dmg =
+			this.attackDamage - opponent.armor > 0
+				? this.attackDamage - opponent.armor
+				: 0;
+		// console.log("player dmg", dmg);
+		// Pour la méthode attack:
+		// c'est un button attention au comportement par défaut
+		// faire attaquer le perso
+
+		return dmg;
 	}
 	defense() {
-        const random = getRandomInteger(1, this.pvMax / 10)
+		const random = getRandomInteger(1, this.pvMax / 10);
 		this.armor += random;
-        return random;
+		return random;
 	}
-	spell() {
+	spell(opponent) {
+		console.log(opponent);
 		this.power += getRandomInteger(1, this.pvMax / 10);
+		return this.power;
 	}
 }
 export default Perso;

@@ -32,15 +32,8 @@ class Program {
 	// onClickAttack
 	onClickAttack(e) {
 		e.preventDefault();
-		this.player.attack();
-		const dmg =
-			this.player.attackDamage - this.opponent.armor > 0
-				? this.player.attackDamage - this.opponent.armor
-				: 0;
-		console.log("player dmg", dmg);
-		// Pour la méthode attack:
-		// c'est un button attention au comportement par défaut
-		// faire attaquer le perso
+		let dmg = this.player.attack(this.opponent);
+		console.log(dmg);
 		this.opponent.pv -= dmg;
 		this.actionPlayer = `${this.player.name} attaque et inflige  ${dmg} de dégats`;
 		// le dragon counter
@@ -55,14 +48,14 @@ class Program {
 		let armor = this.player.defense();
 		this.actionPlayer = `${this.player.name} defend et augmente son armure de ${armor}`;
 		this.counter();
+		this.affichage();
 	}
 	// onClickSpell
 	onClickSpell(e) {
 		e.preventDefault();
-		const Magicdmg = this.player.power;
-		this.opponent.pv -= Magicdmg;
-		console.log("player dmgM", Magicdmg);
-		this.actionPlayer = `${this.player.name} envoie un sort qui traverse l'armure et inflige  ${Magicdmg} de dégats magiques`;
+		let dmg = this.player.spell(this.opponent);
+		this.opponent.pv -= dmg;
+		this.actionPlayer = `${this.player.name} envoie un sort qui traverse l'armure et inflige  ${dmg} de dégats magiques`;
 		this.counter();
 		this.affichage();
 	}
@@ -72,11 +65,7 @@ class Program {
 		switch (random) {
 			case 1:
 				console.log("dragon att");
-				this.opponent.attack();
-				const dmg =
-					this.opponent.attackDamage - this.player.armor > 0
-						? this.opponent.attackDamage - this.player.armor
-						: 0;
+				let dmg = this.opponent.attack(this.player);
 				this.player.pv -= dmg;
 				console.log("dragon dmg", dmg);
 				this.actionOponnent = `le ${this.opponent.name} attaque et inflige ${dmg} de dégats`;
@@ -88,10 +77,8 @@ class Program {
 				break;
 			case 3:
 				console.log("dragon spell");
-				this.opponent.spell();
-				const Magicdmg = this.opponent.power;
+				let Magicdmg = this.opponent.spell(this.player);
 				this.player.pv -= Magicdmg;
-				console.log("dragon dmg", Magicdmg);
 				this.actionOponnent = `le ${this.opponent.name} envoie un sort qui traverse l'armure et inflige ${Magicdmg} de dégats magiques`;
 				break;
 		}
